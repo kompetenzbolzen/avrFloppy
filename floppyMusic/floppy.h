@@ -9,9 +9,13 @@
 #ifndef FLOPPY_H_
 #define FLOPPY_H_
 
+#ifndef F_CPU
+#define F_CPU 16000000UL
+#endif
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 
 uint8_t timer_overflow_counter;
 uint8_t floppy_frequencies[8];

@@ -17,7 +17,7 @@ ISR(TIMER0_OVF_vect)
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		if(floppy_nextrun[i] == (timer_overflow_counter + 1)) //Do Stuff. Doesnt work
+		if(floppy_nextrun[i] == (timer_overflow_counter + 1))
 		{
 			floppy_nextrun[i] += floppy_frequencies[i];
 			floppy_pulse(i);
@@ -40,8 +40,6 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	*dDDR	= 0xff;
 	*dPORT	= 0xff;
 	
-	
-
 	//Variable init
 	timer_overflow_counter = 0;
 
@@ -63,7 +61,7 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	*fPORT	= 0xff;
 
 	//Setup Timer
-	TCCR0	|= (1 << CS01); // Prescaler 8, for max Frequency of 488 Hertz for F_CPU = 1MHz
+	TCCR0	|= (1 << CS01); // Prescaler 8 To leave enough time for ISR to complete
 	TIMSK	|= (1 << TOIE0); //Activate Interrupt
 	sei();
  }
