@@ -17,7 +17,7 @@ ISR(TIMER0_OVF_vect)
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		if(floppy_nextrun[i] == timer_overflow_counter )
+		if(floppy_nextrun[i] == timer_overflow_counter && floppy_frequencies[i] > 0)
 		{
 			floppy_nextrun[i] += floppy_frequencies[i];
 			floppy_pulse(i);
@@ -87,7 +87,12 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	}
  }
 
- int floppy_calc_freq(uint32_t _f_hz)
+ uint8_t floppy_calc_freq(uint32_t _f_hz)
  {
-	
+	if(_f_hz < 31)
+		return 255;
+	if(_f_hz > 7813)
+		return 1;
+
+	return 7913 / _f_hz;
  }
