@@ -12,19 +12,25 @@
 #include <avr/io.h>
 
 #include "floppy.h"
-#include "uart.h"
+//#include "uart.h"
 
 int main(void)
 {
-	uart_init(9600);
+	//uart_init(9600);
+	//DDRC = 0xff;
+	floppy_setup(&PORTC, &DDRC, &PORTB, &DDRB);
+	floppy_set_frequency(0, 70);
 
-	floppy_setup(&PORTC, &DDRC, &PORTD, &DDRD);
-	floppy_set_frequency(0, 4);
+	DDRD = 0xff;
 
-	uart_send_string("Floppy Music\n");
+	PORTD = 0xff; //DEBUG
 
+	//uart_send_string("Floppy Music\n");
     while (1) 
     {
-		floppy_set_frequency(0, uart_recieve());
+		//floppy_set_frequency(0, uart_recieve());
+		//uart_send_string("Floppy Music\n");
+		//_delay_ms(500);
+		//PORTD ^= 0xff;
     }
 }

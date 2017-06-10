@@ -17,7 +17,7 @@ ISR(TIMER0_OVF_vect)
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		if(floppy_nextrun[i] == (timer_overflow_counter + 1))
+		if(floppy_nextrun[i] == timer_overflow_counter )
 		{
 			floppy_nextrun[i] += floppy_frequencies[i];
 			floppy_pulse(i);
@@ -34,7 +34,7 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	fDDR	= _pulse_ddr;
 	dPORT	= _direction_port;
 	dDDR	= _direction_ddr;
-
+	
 	*fDDR	= 0xff;
 	*fPORT	= 0xff;
 	*dDDR	= 0xff;
@@ -58,17 +58,20 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 		*fPORT ^= 0xff;
 	}
 
+	*dPORT	= 0x00;
 	*fPORT	= 0xff;
 
 	//Setup Timer
 	TCCR0	|= (1 << CS01); // Prescaler 8 To leave enough time for ISR to complete
 	TIMSK	|= (1 << TOIE0); //Activate Interrupt
+
 	sei();
  }
 
  void floppy_set_frequency(uint8_t _floppy_id, uint8_t _freq)
  {
-	floppy_frequencies[_floppy_id] = floppy_nextrun[_floppy_id] = _freq;
+	floppy_frequencies[_floppy_id] = _freq;
+	floppy_nextrun[_floppy_id] = _freq + timer_overflow_counter;
  }
 
  void floppy_pulse(uint8_t _floppy_id)
@@ -82,4 +85,9 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 		*dPORT ^= (1<<_floppy_id);
 		floppy_head_return_counter[_floppy_id] = 0;
 	}
+ }
+
+ int floppy_calc_freq(uint32_t _f_hz)
+ {
+	
  }

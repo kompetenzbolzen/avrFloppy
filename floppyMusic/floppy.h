@@ -30,5 +30,7 @@ void floppy_set_frequency(uint8_t _floppy_id, uint8_t _freq);
 
 void floppy_pulse(uint8_t _floppy_id);
 
+int floppy_calc_freq(uint32_t _f_hz);
+
 
 #endif /* FLOPPY_H_ */
