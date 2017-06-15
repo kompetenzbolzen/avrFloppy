@@ -7,23 +7,20 @@
 
  #include "uart.h"
 
- void uart_init(uint32_t _baud)
+ void uart_init(unsigned int _baud)
  {
-	 unsigned int ubrr = _GET_UBBR(_baud);
+	unsigned  int ubrr =  (F_CPU / (16 * _baud))  - 1;
 
-	 UBRRH = (ubrr<<8);
-	 UBRRL = ubrr;
+	 UBRRH = (unsigned char)(ubrr>>8) & 0xff;
+	 UBRRL = (unsigned char)ubrr & 0xff;
 
-	 /* Enable receiver and transmitter */
 	 UCSRB = (1<<RXEN)|(1<<TXEN);
-
-	 /* Set frame format: 8data, 2stop bit */
 	 UCSRC = (1<<URSEL)|(1<<USBS)|(3<<UCSZ0);
  }
 
  void uart_send(char _data)
  {
-	 while(!(UCSRA & (1<<UDRE)));
+	 while(!(UCSRA & (1<<UDRE))); //Wait for previous data to be sent
 	 UDR = _data;
  }
 
@@ -40,7 +37,7 @@
 
  char uart_recieve()
  {
-	 while(!(UCSRA & (1<<RXC)));
+	 while(!(UCSRA & (1<<RXC))); //Wait for data
 
 	 return UDR;
  }

@@ -15,14 +15,16 @@
 
 #include <avr/io.h>
 
+
 #define _GET_UBBR(BAUD) ( (F_CPU / 16 * BAUD) - 1)
 
-void uart_init(uint32_t _baud);
+void uart_init(unsigned int _baud);
 
 void uart_send(char _data);
 
 void uart_send_string(char *_data);
 
 char uart_recieve(void);
+
 
 #endif /* UART_H_ */

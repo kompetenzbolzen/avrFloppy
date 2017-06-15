@@ -13,7 +13,7 @@ ISR(TIMER0_OVF_vect)
 
 	timer_overflow_counter ++;
 
-	*fPORT = 0xff;
+	*fPORT = 0xff; //Deactivate all previously activated pins
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
@@ -35,6 +35,7 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	dPORT	= _direction_port;
 	dDDR	= _direction_ddr;
 	
+	//Floppy inputs are active low so they are initialized high
 	*fDDR	= 0xff;
 	*fPORT	= 0xff;
 	*dDDR	= 0xff;
@@ -51,14 +52,13 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 	}
 
 	//Return all FDDs to track 0
-
 	for(uint8_t i = 0; i < 200; i++)
 	{
 		_delay_ms(5);
 		*fPORT ^= 0xff;
 	}
 
-	*dPORT	= 0x00;
+	*dPORT	= 0x00; //Head needs to be reversed
 	*fPORT	= 0xff;
 
 	//Setup Timer
