@@ -5,30 +5,41 @@
  *  Author: Jonas
  */ 
 
+#ifndef F_CPU
+#error F_CPU not defined for midi.h
+#endif
 
 #ifndef MIDI_H_
 #define MIDI_H_
 
-#define _MIDI_SEND 0
-#define _MIDI_RECIEVE 1
+#define _MIDI_LINK_SPEED 30000UL //Standard MIDI linkspeed is 30k baud
 
-#include "uart.h"
 
-struct midi_command
-{
-	char command;
-	char channel;
-	char note;
-	char velocity;
-};
 
+#include <avr/interrupt.h>
+#include <avr/io.h>
+
+#include "floppy.h"
+
+char midi_active_channels;
+uint16_t midi_current_notes[8];
+const uint16_t midi_code_frequency_table[232];
 
 void midi_setup();
+/*
+* initializes UART communication and Interrupts
+*/
 
-void midi_recieve(struct midi_command *_command);
+void midi_update_note(uint16_t _note, uint8_t _status);
+/*
+* _note : MIDI standard note #
+* _status : 0=OFF >0=ON
+*/
 
-void midi_send(struct midi_command _command);
-
+char midi_recieve();
+/*
+* reads UART recieve buffer 
+*/
 
 
 #endif /* MIDI_H_ */

@@ -15,11 +15,11 @@ ISR(TIMER0_OVF_vect)
 
 	*fPORT = 0xff; //Deactivate all previously activated pins
 
-	for(uint8_t i = 0; i < 8; i++)
+	for(uint8_t i = 0; i < 8; i++) //Perform check of every channel
 	{
-		if(floppy_nextrun[i] == timer_overflow_counter && floppy_frequencies[i] > 0)
+		if(floppy_nextrun[i] == timer_overflow_counter && floppy_frequencies[i] > 0) //check if pulse is due
 		{
-			floppy_nextrun[i] += floppy_frequencies[i];
+			floppy_nextrun[i] += floppy_frequencies[i]; //set next pulse
 			floppy_pulse(i);
 		}
 	}
@@ -27,7 +27,7 @@ ISR(TIMER0_OVF_vect)
 	sei();
 }
 
-void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, char *_direction_ddr)
+void floppy_setup(unsigned char *_pulse_port, unsigned char *_pulse_ddr, unsigned char *_direction_port, unsigned char *_direction_ddr)
  {
 	//Setup Ports
 	fPORT	= _pulse_port;
@@ -89,6 +89,8 @@ void floppy_setup(char *_pulse_port, char *_pulse_ddr, char *_direction_port, ch
 
  uint8_t floppy_calc_freq(uint32_t _f_hz)
  {
+
+	///TODO Shift notes out of effective range of FDD into range
 	if(_f_hz < 31)
 		return 255;
 	if(_f_hz > 7813)

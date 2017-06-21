@@ -5,28 +5,38 @@
  * Author : Jonas
  */ 
 
- #ifndef F_CPU
- #define F_CPU 16000000UL //CPU Running at 16MHz
- #endif
+#define _TEST_MODE
 
 #include <avr/io.h>
 
 #include "floppy.h"
+#include "midi.h"
+
+#ifdef _TEST_MODE
 #include "music.h"
-#include "uart.h"
+#endif
 
 int main(void)
 {
-	uart_init(9600);
 	floppy_setup(&PORTC, &DDRC, &PORTB, &DDRB);
-	DDRA = 0xff;
-	uart_send_string("Hallo\n");
 
-    while (1) 
+	#ifdef _TEST_MODE //Play imperial March in test mode
+
+	DDRA = 0xff;
+
+    for(;;)
     {
 		play_imperial_march();
 		_delay_ms(2000);
-		uart_send_string("Hallo\n");
     }
+
+	#else //Normal MIDI mode
+
+	midi_setup();
+
+	for(;;);
+
+	#endif
+
 }
 
