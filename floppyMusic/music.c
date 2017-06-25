@@ -26,7 +26,7 @@
 	 beep(cH, 150);
 	 beep(a, 650);
 	 
-	 delay_ms(150);
+	 _delay_ms(150);
 	 //end of first bit
 	 
 	 beep(eH, 500);
@@ -39,7 +39,7 @@
 	 beep(cH, 150);
 	 beep(a, 650);
 	 
-	 delay_ms(150);
+	 _delay_ms(150);
 	 //end of second bit...
 	 
 	 beep(aH, 500);
@@ -52,7 +52,7 @@
 	 beep(fH, 125);
 	 beep(fSH, 250);
 	 
-	 delay_ms(250);
+	 _delay_ms(250);
 	 
 	 beep(aS, 250);
 	 beep(dSH, 400);
@@ -62,7 +62,7 @@
 	 beep(b, 125);
 	 beep(cH, 250);
 	 
-	 delay_ms(250);
+	 _delay_ms(250);
 	 
 	 beep(f, 125);
 	 beep(gS, 500);
@@ -86,7 +86,7 @@
 	 beep(fH, 125);
 	 beep(fSH, 250);
 	 
-	 delay_ms(250);
+	 _delay_ms(250);
 	 
 	 beep(aS, 250);
 	 beep(dSH, 400);
@@ -96,7 +96,7 @@
 	 beep(b, 125);
 	 beep(cH, 250);
 	 
-	 delay_ms(250);
+	 _delay_ms(250);
 	 
 	 beep(f, 250);
 	 beep(gS, 500);
@@ -243,5 +243,5 @@
 	 floppy_set_frequency(0, 0);
 	 floppy_set_frequency(1, 0);
 
-	 delay_ms(10);
+	 _delay_ms(10);
  }

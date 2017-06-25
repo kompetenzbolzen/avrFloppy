@@ -49,5 +49,4 @@ uint8_t floppy_calc_freq(uint32_t _f_hz);
 * _f_hz : Frequency in Hz
 */
 
-
 #endif /* FLOPPY_H_ */

@@ -9,8 +9,6 @@
 
 ISR(TIMER0_OVF_vect)
 {
-	cli();
-
 	timer_overflow_counter ++;
 
 	*fPORT = 0xff; //Deactivate all previously activated pins
@@ -23,8 +21,6 @@ ISR(TIMER0_OVF_vect)
 			floppy_pulse(i);
 		}
 	}
-
-	sei();
 }
 
 void floppy_setup(unsigned char *_pulse_port, unsigned char *_pulse_ddr, unsigned char *_direction_port, unsigned char *_direction_ddr)
@@ -89,12 +85,12 @@ void floppy_setup(unsigned char *_pulse_port, unsigned char *_pulse_ddr, unsigne
 
  uint8_t floppy_calc_freq(uint32_t _f_hz)
  {
+	uint32_t f = _f_hz;
 
-	///TODO Shift notes out of effective range of FDD into range
 	if(_f_hz < 31)
 		return 255;
-	if(_f_hz > 7813)
-		return 1;
+	if(_f_hz > 400) //FDD cant go over 400Hz so the tone is shifted down in octaves
+		for(f = _f_hz; f > 400; f /= 2);
 
-	return 7913 / _f_hz;
+	return 7913 / f;
  }

@@ -5,15 +5,16 @@
  * Author : Jonas
  */ 
 
-#define _TEST_MODE
+//#define _TEST_MODE
 
 #include <avr/io.h>
 
 #include "floppy.h"
-#include "midi.h"
 
 #ifdef _TEST_MODE
 #include "music.h"
+#else
+#include "midi.h"
 #endif
 
 int main(void)
@@ -27,14 +28,18 @@ int main(void)
     for(;;)
     {
 		play_imperial_march();
-		_delay_ms(2000);
+		_delay_ms(1000);
     }
 
 	#else //Normal MIDI mode
 
 	midi_setup();
 
-	for(;;);
+	for(;;)
+	{
+		while (!(UCSRA & (1<<UDRE)));
+		UDR = 0b10101010;
+	}
 
 	#endif
 
