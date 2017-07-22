@@ -8,6 +8,7 @@
 //#define _TEST_MODE
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "floppy.h"
 
@@ -37,8 +38,8 @@ int main(void)
 
 	for(;;)
 	{
-		while (!(UCSRA & (1<<UDRE)));
-		UDR = 0b10101010;
+		midi_process();
+		_delay_us(100);
 	}
 
 	#endif

@@ -38,19 +38,34 @@
 
 #include "floppy.h"
 
-char midi_active_channels;
-uint16_t midi_current_notes[8];
-const uint16_t midi_code_frequency_table[232];
+static char midi_recv_buffer[16];
+static uint8_t midi_recv_ptr;
+
+static char midi_active_channels;
+static uint16_t midi_current_notes[8];
+static const uint16_t midi_code_frequency_table[232];
 
 void midi_setup();
 /*
 * initializes UART communication and Interrupts
 */
+void midi_process();
+/*
+* Run in loop
+*/
 
-void midi_update_note(uint16_t _note, uint8_t _status);
+static void midi_command(char _cmd, char _note, char _vel);
+
+static uint8_t midi_recv_avail();
+
+static char midi_get_recv_buf();
+
+static void midi_update_note(uint16_t _note, uint8_t _status);
 /*
 * _note : MIDI-standard note #
 * _status : 0=OFF >0=ON
 */
+
+static void midi_uart_out(unsigned char _c);
 
 #endif /* MIDI_H_ */
