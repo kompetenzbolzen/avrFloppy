@@ -68,4 +68,6 @@ static void midi_update_note(uint16_t _note, uint8_t _status);
 
 static void midi_uart_out(unsigned char _c);
 
+static void midi_uart_outs( char *_s);
+
 #endif /* MIDI_H_ */

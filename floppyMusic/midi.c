@@ -31,6 +31,8 @@ void midi_setup()
 	UCSRB = (1<<RXEN)  | (1<<TXEN) | (1<<RXCIE); //Enable Tx, Rx and Rx Interrupt
 	UCSRC = (1<<URSEL) | (1<<USBS) | (3<<UCSZ0);
 
+	midi_uart_outs("MIDI set up successfully");
+
 }
 
 void midi_process()
@@ -52,6 +54,8 @@ void midi_process()
 
 	midi_command(command, note, velocity);
 
+	//midi_uart_outs("\nCommand received:\n");
+	midi_uart_out(command);
 }
 
 void midi_command(char _cmd, char _note, char _vel)
@@ -137,4 +141,13 @@ void midi_uart_out(unsigned char _c)
 	;
 	/* Put data into buffer, sends the data */
 	UDR = _c;
+ }
+
+ void midi_uart_outs( char *_s)
+ {
+	while(*_s)
+	{
+		midi_uart_out(*_s);
+		_s++;
+	}
  }
